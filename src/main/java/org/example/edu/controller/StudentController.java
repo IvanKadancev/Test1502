@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class StudentController {
-  private final StudentRepository repository;
+    private final StudentRepository repository;
 
     @GetMapping("/student")
     public List<Student> getStudentList() {
@@ -21,7 +21,7 @@ public class StudentController {
 
     @PostMapping("/student")
     public long saveStudent(@RequestParam String name, @RequestParam String email, @RequestParam int age) {
-        Student saveStudent = new Student( name, email, age);
+        Student saveStudent = new Student(name, email, age);
         return repository.save(saveStudent).getId();
     }
 
@@ -36,5 +36,18 @@ public class StudentController {
         repository.deleteById(id);
     }
 
+    @PutMapping("/student/{id}")
+    public Student updateStudent(@PathVariable long id, @RequestBody Student st) {
+        Student student = repository.findById(id).get();
 
+        student.setName(st.getName());
+        student.setAge(st.getAge());
+        student.setEmail(st.getEmail());
+
+        return repository.save(student);
+    }
 }
+
+
+
+
